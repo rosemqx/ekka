@@ -26,6 +26,7 @@ start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
 init([]) ->
+    ekka_mnesia:start(),
     {ok, {{one_for_all, 0, 3600},
           [child(ekka_cluster_sup, supervisor),
            child(ekka_membership, worker),
