@@ -19,7 +19,6 @@
 -export([start/2, stop/1]).
 
 start(_Type, _Args) ->
-    kvx:join(),
     ekka_sup:start_link().
 
 stop(_State) ->
