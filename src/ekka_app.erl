@@ -21,7 +21,7 @@
 -export([start/2, stop/1]).
 
 start(_Type, _Args) ->
-    kvs:join(),
+    mnesia:start(), mnesia:change_table_copy_type(schema, node(), disc_copies), mnesia:create_schema([node()]),
     ekka_sup:start_link().
 
 stop(_State) ->
