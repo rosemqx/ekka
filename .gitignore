@@ -27,3 +27,4 @@ ekka.d
 _build/
 .rebar3/
 rebar.lock
+.applist
