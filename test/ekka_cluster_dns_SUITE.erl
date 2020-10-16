@@ -27,7 +27,7 @@ t_discover(_) ->
     {ok, Name} = inet:gethostname(),
     Options = [{name, Name}, {app, "ekka"}],
     io:format("Discover ~p~n.", [Name]),
-    {ok, ['ekka@127.0.0.1']} = ekka_cluster_dns:discover(Options).
+    {ok, [_Ip]} = ekka_cluster_dns:discover(Options).
 
 t_lock(_) ->
     ignore = ekka_cluster_dns:lock([]).
