@@ -61,7 +61,7 @@
 
 -type(lock_result() :: {boolean, [node() | {node(), any()}]}).
 
--type(piggyback() :: mfa()).
+-type(piggyback() :: undefined | mfa()).
 
 -export_type([ resource/0
              , lock_type/0
@@ -111,7 +111,7 @@ stop() ->
 stop(Name) ->
     gen_server:call(Name, stop).
 
--spec(acquire(resource()) -> {boolean(), [node()]}).
+-spec(acquire(resource()) -> lock_result()).
 acquire(Resource) ->
     acquire(?SERVER, Resource).
 
@@ -183,7 +183,7 @@ lock_obj(Resource) ->
     #lock{resource = Resource,
           owner    = self(),
           counter  = 0,
-          created  = erlang:system_time(millisecond)
+          created  = erlang:timestamp()
          }.
 
 -spec(release(resource()) -> lock_result()).
