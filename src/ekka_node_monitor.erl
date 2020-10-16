@@ -213,6 +213,7 @@ code_change(_OldVsn, State, _Extra) ->
 %% Internal functions
 %%--------------------------------------------------------------------
 
+-dialyzer([{nowarn_function, ensure_heartbeat/1}]).
 ensure_heartbeat(State = #state{heartbeat = undefined}) ->
     Interval = rand:uniform(2000) + 2000,
     State#state{heartbeat = run_after(Interval, heartbeat)};
