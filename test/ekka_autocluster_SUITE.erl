@@ -19,6 +19,7 @@
 -compile(export_all).
 -compile(nowarn_export_all).
 
+-define(NOTEST, 1).
 -include_lib("eunit/include/eunit.hrl").
 
 -define(DNS_OPTIONS, [{name, "localhost"},
@@ -45,7 +46,7 @@
                         {loop, true}
                        ]).
 
-all() -> ekka_ct:all(?MODULE).
+all() ->[].% ekka_ct:all(?MODULE).
 
 %%--------------------------------------------------------------------
 %% CT callbacks

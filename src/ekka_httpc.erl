@@ -25,6 +25,8 @@
         , put/4
         , delete/3
         , delete/4
+        , build_url/2
+        , build_url/3
         ]).
 
 -ifdef(TEST).

@@ -20,6 +20,8 @@
 
 -import(proplists, [get_value/2]).
 
+-include_lib("kernel/include/inet.hrl").
+
 %% Cluster strategy callbacks
 -export([ discover/1
         , lock/1
@@ -31,9 +33,12 @@
 discover(Options) ->
     Name = get_value(name, Options),
     App  = get_value(app, Options),
-    {ok, [node_name(App, IP) || IP <- inet_res:lookup(Name, in, a)]}.
+    {ok, #hostent{h_addr_list=IPs}} = inet:gethostbyname(Name),
+    {ok, [node_name(App, IP) || IP <- IPs]}.
+    %{ok, [node_name(App, IP) || IP <- inet_res:lookup(Name, in, a)]}.
 
 node_name(App, IP) ->
+    io:format("App ~p Ip: ~p", [App, IP]),
     list_to_atom(App ++ "@" ++ inet:ntoa(IP)).
 
 lock(_Options) ->

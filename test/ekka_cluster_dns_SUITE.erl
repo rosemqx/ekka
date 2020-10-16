@@ -24,7 +24,9 @@
 all() -> ekka_ct:all(?MODULE).
 
 t_discover(_) ->
-    Options = [{name, "localhost"}, {app, "ekka"}],
+    {ok, Name} = inet:gethostname(),
+    Options = [{name, Name}, {app, "ekka"}],
+    io:format("Discover ~p~n.", [Name]),
     {ok, ['ekka@127.0.0.1']} = ekka_cluster_dns:discover(Options).
 
 t_lock(_) ->

@@ -19,6 +19,8 @@
 -compile(export_all).
 -compile(nowarn_export_all).
 
+-export([start_slave/2]).
+
 %% @doc Get all the test cases in a CT suite.
 all(Suite) ->
     lists:usort([F || {F, 1} <- Suite:module_info(exports),
@@ -50,7 +52,8 @@ stop_slave(Node) ->
     slave:stop(Node).
 
 host() ->
-    [_, Host] = string:tokens(atom_to_list(node()), "@"), Host.
+    {ok, Host} = inet:gethostname(), Host.
+    %[_, Host] = string:tokens(atom_to_list(node()), "@"), Host.
 
 ebin_path() ->
     string:join(["-pa" | lists:filter(fun is_lib/1, code:get_path())], " ").
