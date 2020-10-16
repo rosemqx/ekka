@@ -8,8 +8,8 @@
 -record(member, {
           node   :: node(),
           addr   :: undefined | member_address(),
-          guid   :: ekka_guid:guid(),
-          hash   :: pos_integer(),
+          guid   :: undefined | ekka_guid:guid(),
+          hash   :: undefined | pos_integer(),
           status :: member_status(),
           mnesia :: running | stopped | false,
           ltime  :: erlang:timestamp()

@@ -230,6 +230,7 @@ init([]) ->
                           true  -> running;
                           false -> stopped
                       end,
+    
     LocalMember = with_hash(#member{node = node(), guid = ekka_guid:gen(),
                                     status = up, mnesia = IsMnesiaRunning,
                                     ltime = erlang:timestamp()
@@ -273,7 +274,7 @@ handle_cast({node_up, Node}, State) ->
         true ->
             Member = case lookup(Node) of
                        [M] -> M#member{status = up};
-                       []  -> #member{node = Node, status = up}
+                       []  -> #member{node = Node, status = up, mnesia=false, ltime=erlang:timestamp()}
                      end,
             insert(Member#member{mnesia = ekka_mnesia:cluster_status(Node)});
         false -> ignore
@@ -297,7 +298,7 @@ handle_cast({joining, Node}, State) ->
     ?LOG(info, "Node ~s joining", [Node]),
     insert(case lookup(Node) of
                [Member] -> Member#member{status = joining};
-               []       -> #member{node = Node, status = joining}
+               []       -> #member{node = Node, status = joining, mnesia = false, ltime=erlant:timestamp()}
            end),
     notify({node, joining, Node}, State),
     {noreply, State};
@@ -338,7 +339,7 @@ handle_cast({mnesia_up, Node}, State) ->
                [Member] ->
                    Member#member{status = up, mnesia = running};
                [] ->
-                   #member{node = Node, status = up, mnesia = running}
+                   #member{node = Node, status = up, mnesia = running, ltime = erlang:timestamp()}
            end),
     spawn(?MODULE, pong, [Node, local_member()]),
     notify({mnesia, up, Node}, State),

@@ -189,7 +189,7 @@ handle_info(heartbeat, State) ->
                   end, AliveNodes),
     {noreply, ensure_heartbeat(State#state{heartbeat = undefined})};
 
-handle_info(Msg = {'EXIT', Pid, _Reason}, State = #state{autoheal = Autoheal}) ->
+handle_info(Msg = {'EXIT', Pid, _Reason}, State = #state{autoheal = Autoheal}) ->    
     case ekka_autoheal:proc(Autoheal) of
         Pid -> {noreply, autoheal_handle_msg(Msg, State)};
         _   -> {noreply, State}
