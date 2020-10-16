@@ -92,11 +92,7 @@
 start() ->
     case ekka_mnesia:start() of
         ok -> ok;
-        {error, {timeout, Tables}} ->
-            logger:error("Mnesia wait_for_tables timeout: ~p", [Tables]),
-            ok;
-        {error, Reason} ->
-            error(Reason)
+        {error, Reason} -> error(Reason)
     end,
     {ok, _Apps} = application:ensure_all_started(ekka),
     ok.
@@ -168,13 +164,13 @@ autocluster(App) ->
 %% Register callback
 %%--------------------------------------------------------------------
 
--spec(callback(atom()) -> undefined | function()).
+-spec(callback(atom()) -> undefined | {ok, term()}).
 callback(Name) ->
-    env({callback, Name}).
+    env(Name).
 
 -spec(callback(atom(), function()) -> ok).
 callback(Name, Fun) ->
-    application:set_env(ekka, {callback, Name}, Fun).
+    application:set_env(ekka, Name, Fun).
 
 %%--------------------------------------------------------------------
 %% Node API
