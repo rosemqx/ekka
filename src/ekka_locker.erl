@@ -59,7 +59,7 @@
 
 -type(lock_type() :: local | leader | quorum | all).
 
--type(lock_result() :: {boolean, [node() | {node(), any()}]}).
+-type(lock_result() :: {boolean(), [node() | {node(), any()}]}).
 
 -type(piggyback() :: undefined | mfa()).
 
