@@ -21,9 +21,14 @@
 -export([start/2, stop/1]).
 
 start(_Type, _Args) ->
-    mnesia:start(), mnesia:change_table_copy_type(schema, node(), disc_copies), mnesia:create_schema([node()]),
-    ekka_sup:start_link().
+  stopped = mnesia:stop(),
+  SN = ekka:env(sname),
+  case node() of nonode@nohost when SN =/= undefined -> {ok,V} = SN, net_kernel:start([V, shortnames]);_ -> ok end,
+  ok = mnesia:start(),
+  ok = mnesia:wait_for_tables(mnesia:system_info(local_tables), 10000),
+  {_, _R} = mnesia:change_table_copy_type(schema, node(), disc_copies),
+  mnesia:create_schema([node()]),
+  ekka_sup:start_link().
 
-stop(_State) ->
-	ok.
+stop(_State) -> ok.
 

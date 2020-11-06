@@ -12,7 +12,7 @@ rel/example_project
 .erlang.mk/
 !data/app.etcd.config
 ekka.d
-Mnesia*
+**/Mnesia*/
 logs/
 .DS_Store
 cover/
